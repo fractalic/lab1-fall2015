@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * This is the main class for the Tour de France program. If has the main( )
+ * This is the main class for the Tour de France program. It has the main( )
  * method that reads biker information from a file and then performs some
  * computations with the data.
  * 
@@ -126,6 +126,9 @@ public class TdFMain {
         double medianSpeed = 0;
         // Your code for this should go here and should set the correct value in
         // medianSpeed.
+        // TODO: foreach biker in bikers, foreach speed in biker.speed
+        //  add to sorted list, then take the middle element or average of
+        //  two middle elements.
 
         System.out.println("\nThe median speed at the Tour de France is "
                 + medianSpeed);

@@ -35,7 +35,7 @@ public class TdFMain {
         // The file name is hardcoded, which is not elegant.
         // Suffices for now.
         try {
-            tdfStream = new FileInputStream("testData");
+            tdfStream = new FileInputStream("tdf.txt");
         } catch (FileNotFoundException e) {
             // If, for some reason, the file was not found,
             // then throw an exception.
@@ -110,6 +110,10 @@ public class TdFMain {
             throw new RuntimeException(e);
         }
 
+        // TODO: move median logic to function
+        // TODO: compress loops through bikers to one loop
+        
+        
         // for each entry in allBikers:
         // print the best gain for the biker.
         // The best gain is defined as the maximum improvement in

@@ -123,14 +123,12 @@ public class TdFMain {
         for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
             Biker currentBiker = currentEntry.getValue();
 
-            // How to print formatted strings
-            // Note the use of String.format( )
             System.out.println(String.format("%-30s: %s",
                     currentBiker.getName(), currentBiker.getBestGain()));
         }
         
-        // List all the averages speeds for every year for every biker.
-        ArrayList<Double> allAverageSpeeds = new ArrayList<Double>();
+        // List all the average speeds for every year for every biker.
+        ArrayList<Double> allRecordedAverageSpeeds = new ArrayList<Double>();
         for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
         	Biker currentBiker = currentEntry.getValue();
         	Boolean competedCurrentYear = false;
@@ -144,28 +142,29 @@ public class TdFMain {
         		competedCurrentYear = (bikerSpeedCurrentYear > 0) ? true : false;
         		
             	if (competedCurrentYear) {
-            		allAverageSpeeds.add(bikerSpeedCurrentYear);
+            		allRecordedAverageSpeeds.add(bikerSpeedCurrentYear);
             	}
             }
         }
         
-        // Compute the median over all biker speeds over all years in this dataset.
-        Collections.sort(allAverageSpeeds);
-        double medianSpeed = getMedian(allAverageSpeeds);
+        // Compute the median over all recorded speeds.
+        Collections.sort(allRecordedAverageSpeeds);
+        double medianSpeed = getMedian(allRecordedAverageSpeeds);
 
         System.out.println("\nThe median speed at the Tour de France is "
                 + medianSpeed);
 
-        // Compute the median speed over all years for each biker.
-        ArrayList<Double> allBikerMedianSpeeds = new ArrayList<Double>();
+        // Compute each biker's median speed over all years they competed.
+        ArrayList<Double> bikerMedianSpeeds = new ArrayList<Double>();
         for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
             Biker currentBiker = currentEntry.getValue();
-            allBikerMedianSpeeds.add(currentBiker.getMedianSpeed());
+            bikerMedianSpeeds.add(currentBiker.getMedianSpeed());
         }
         
-        // Compute the median over all biker speeds over all years in this dataset.
-        Collections.sort(allBikerMedianSpeeds);
-        double medianOfMedians = getMedian(allBikerMedianSpeeds);
+        // Compute the median of each biker's median speed over
+        // all years they competed.
+        Collections.sort(bikerMedianSpeeds);
+        double medianOfMedians = getMedian(bikerMedianSpeeds);
 
         System.out.println("\nThe median of medians at the Tour de France is "
                 + medianOfMedians);

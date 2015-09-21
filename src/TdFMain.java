@@ -35,7 +35,7 @@ public class TdFMain {
         // The file name is hardcoded, which is not elegant.
         // Suffices for now.
         try {
-            tdfStream = new FileInputStream("testData");
+            tdfStream = new FileInputStream("tdf.txt");
         } catch (FileNotFoundException e) {
             // If, for some reason, the file was not found,
             // then throw an exception.
@@ -109,10 +109,11 @@ public class TdFMain {
             // If, for any reason, we had some problems reading data...
             throw new RuntimeException(e);
         }
-
-        // TODO: move median logic to function
-        // TODO: compress loops through bikers to one loop
         
+        // Save the median speed for each biker.
+        ArrayList<Double> bikerMedianSpeeds = new ArrayList<Double>();
+        // Save all the average speeds for every biker over every year.
+        ArrayList<Double> allRecordedAverageSpeeds = new ArrayList<Double>();
         
         // for each entry in allBikers:
         // print the best gain for the biker.
@@ -122,16 +123,12 @@ public class TdFMain {
         // entries with a gap (no racing) between the years is okay.
         for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
             Biker currentBiker = currentEntry.getValue();
-
-            System.out.println(String.format("%-30s: %s",
-                    currentBiker.getName(), currentBiker.getBestGain()));
-        }
-        
-        // List all the average speeds for every year for every biker.
-        ArrayList<Double> allRecordedAverageSpeeds = new ArrayList<Double>();
-        for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
-        	Biker currentBiker = currentEntry.getValue();
-        	Boolean competedCurrentYear = false;
+            
+            // Compute each biker's median speed over all years they competed.
+            bikerMedianSpeeds.add(currentBiker.getMedianSpeed());
+            
+            // List all the average speeds for every biker over every year.
+            Boolean competedCurrentYear = false;
         	for (int competitionYear = firstCompetitionYear;
             		competitionYear <= lastCompetitionYear;
             		competitionYear++ ) {
@@ -145,6 +142,9 @@ public class TdFMain {
             		allRecordedAverageSpeeds.add(bikerSpeedCurrentYear);
             	}
             }
+
+            System.out.println(String.format("%-30s: %s",
+                    currentBiker.getName(), currentBiker.getBestGain()));
         }
         
         // Compute the median over all recorded speeds.
@@ -153,13 +153,6 @@ public class TdFMain {
 
         System.out.println("\nThe median speed at the Tour de France is "
                 + medianSpeed);
-
-        // Compute each biker's median speed over all years they competed.
-        ArrayList<Double> bikerMedianSpeeds = new ArrayList<Double>();
-        for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
-            Biker currentBiker = currentEntry.getValue();
-            bikerMedianSpeeds.add(currentBiker.getMedianSpeed());
-        }
         
         // Compute the median of each biker's median speed over
         // all years they competed.

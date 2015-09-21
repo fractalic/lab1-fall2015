@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -93,23 +97,52 @@ public class Biker {
      *         once then the improvement is 0.
      */
     public double getBestGain() {
-        // TODO this is where you must add your code
-        // the return statement is bogus for now
-        // You need to implement this method correctly.
-        return 0.0;
+    	Integer previousYear = averageSpeeds.firstKey();
+    	Double previousAvgSpeed = averageSpeeds.get(previousYear);
+    	Double bestGain = 0.0;
+    	
+        for (Map.Entry<Integer, Double> currentEntry : averageSpeeds.entrySet()) {
+        	Integer currentYear = currentEntry.getKey();
+        	Double currentAverageSpeed = currentEntry.getValue();
+        	Double currentGain = currentAverageSpeed - previousAvgSpeed;
+        	
+        	if (currentYear == previousYear + 1) {
+        		if (currentGain > bestGain) {
+        			bestGain = currentGain;
+        		}
+        	}
+        	
+        	previousYear = currentYear;
+        	previousAvgSpeed = currentAverageSpeed;
+        }
+        return bestGain;
     }
 
     /**
      * Returns the median speed among the biker's appearances at the Tour de
-     * France.
+     * France. The median speed is the middle element in a sorted list,
+     * or the average of the middle elements in a sorted list with an
+     * even number of elements.
      * 
      * @return The median speed from the set of the biker's appearances.
      */
     public double getMedianSpeed() {
-        // TODO: return the median speed for this biker across the years
-        // the return statement is bogus for now.
-        // You need to implement this method correctly.
-        return 0.0;
+        ArrayList<Double> averageSpeedsOnly = new ArrayList<Double>(averageSpeeds.values());
+        Collections.sort(averageSpeedsOnly);
+        
+        double medianSpeed = averageSpeedsOnly.get(averageSpeedsOnly.size() / 2);
+        
+        if ((averageSpeedsOnly.size() % 2)==0) {
+        	Double lowerMidpoint =
+        			averageSpeedsOnly.get(averageSpeedsOnly.size() / 2 - 1);
+        	
+        	Double upperMidpoint =
+        			averageSpeedsOnly.get(averageSpeedsOnly.size() / 2);
+        	
+        	medianSpeed = (lowerMidpoint + upperMidpoint) / 2.0;
+        }    
+        
+        return medianSpeed;
     }
 
     /**

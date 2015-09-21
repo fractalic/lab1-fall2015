@@ -35,7 +35,7 @@ public class TdFMain {
         // The file name is hardcoded, which is not elegant.
         // Suffices for now.
         try {
-            tdfStream = new FileInputStream("tdf.txt");
+            tdfStream = new FileInputStream("testData");
         } catch (FileNotFoundException e) {
             // If, for some reason, the file was not found,
             // then throw an exception.
@@ -151,16 +151,7 @@ public class TdFMain {
         
         // Compute the median over all biker speeds over all years in this dataset.
         Collections.sort(allAverageSpeeds);
-        double medianSpeed = allAverageSpeeds.get(allAverageSpeeds.size() / 2);
-        if ((allAverageSpeeds.size() % 2)==0) {
-        	Double lowerMidpoint =
-        			allAverageSpeeds.get(allAverageSpeeds.size() / 2 - 1);
-        	
-        	Double upperMidpoint =
-        			allAverageSpeeds.get(allAverageSpeeds.size() / 2);
-        	
-        	medianSpeed = (lowerMidpoint + upperMidpoint) / 2.0;
-        }
+        double medianSpeed = getMedian(allAverageSpeeds);
 
         System.out.println("\nThe median speed at the Tour de France is "
                 + medianSpeed);
@@ -174,18 +165,31 @@ public class TdFMain {
         
         // Compute the median over all biker speeds over all years in this dataset.
         Collections.sort(allBikerMedianSpeeds);
-        double medianOfMedians = allBikerMedianSpeeds.get(allBikerMedianSpeeds.size() / 2);
-        if ((allBikerMedianSpeeds.size() % 2)==0) {
-        	Double lowerMidpoint =
-        			allBikerMedianSpeeds.get(allBikerMedianSpeeds.size() / 2 - 1);
-        	
-        	Double upperMidpoint =
-        			allBikerMedianSpeeds.get(allBikerMedianSpeeds.size() / 2);
-        	
-        	medianOfMedians = (lowerMidpoint + upperMidpoint) / 2.0;
-        }
+        double medianOfMedians = getMedian(allBikerMedianSpeeds);
 
         System.out.println("\nThe median of medians at the Tour de France is "
                 + medianOfMedians);
+    }
+    /**
+     * The getMedian( ) method finds the median of a list.
+     * The median is the middle element, or the average of the two
+     * middle elements in a list with an even number of elements.
+     * 
+     * @param sortedElements
+     *            A sorted ArrayList of Doubles, from which to select the median.
+     *            
+     */
+    public static double getMedian(ArrayList<Double> sortedElements) {
+    	double median = sortedElements.get(sortedElements.size() / 2);
+        if ((sortedElements.size() % 2)==0) {
+        	Double lowerMidpoint =
+        			sortedElements.get(sortedElements.size() / 2 - 1);
+        	
+        	Double upperMidpoint =
+        			sortedElements.get(sortedElements.size() / 2);
+        	
+        	median = (lowerMidpoint + upperMidpoint) / 2.0;
+        }
+    	return median;
     }
 }

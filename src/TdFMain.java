@@ -18,6 +18,9 @@ public class TdFMain {
      *            We do not use this parameter at this point.
      */
     public static void main(String[] args) {
+    	// Hardcoded competition years contained in the dataset.
+    	int firstCompetitionYear = 2005;
+    	int lastCompetitionYear = 2012;
 
         // The FileInputStream to open and read from the file that
         // has the Tour de France data.
@@ -32,7 +35,7 @@ public class TdFMain {
         // The file name is hardcoded, which is not elegant.
         // Suffices for now.
         try {
-            tdfStream = new FileInputStream("tdf.txt");
+            tdfStream = new FileInputStream("testData");
         } catch (FileNotFoundException e) {
             // If, for some reason, the file was not found,
             // then throw an exception.
@@ -121,25 +124,62 @@ public class TdFMain {
             System.out.println(String.format("%-30s: %s",
                     currentBiker.getName(), currentBiker.getBestGain()));
         }
-
-        // TODO: Compute the median speed across all the entries.
-        double medianSpeed = 0;
-        // Your code for this should go here and should set the correct value in
-        // medianSpeed.
-        // TODO: foreach biker in bikers, foreach speed in biker.speed
-        //  add to sorted list, then take the middle element or average of
-        //  two middle elements.
+        
+        // List all the averages speeds for every year for every biker.
+        ArrayList<Double> allAverageSpeeds = new ArrayList<Double>();
+        for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
+        	Biker currentBiker = currentEntry.getValue();
+        	Boolean competedCurrentYear = false;
+        	for (int competitionYear = firstCompetitionYear;
+            		competitionYear <= lastCompetitionYear;
+            		competitionYear++ ) {
+        		
+        		Double bikerSpeedCurrentYear =
+        				currentBiker.getSpeedForYear(competitionYear);
+        		
+        		competedCurrentYear = (bikerSpeedCurrentYear > 0) ? true : false;
+        		
+            	if (competedCurrentYear) {
+            		allAverageSpeeds.add(bikerSpeedCurrentYear);
+            	}
+            }
+        }
+        
+        // Compute the median over all biker speeds over all years in this dataset.
+        Collections.sort(allAverageSpeeds);
+        double medianSpeed = allAverageSpeeds.get(allAverageSpeeds.size() / 2);
+        if ((allAverageSpeeds.size() % 2)==0) {
+        	Double lowerMidpoint =
+        			allAverageSpeeds.get(allAverageSpeeds.size() / 2 - 1);
+        	
+        	Double upperMidpoint =
+        			allAverageSpeeds.get(allAverageSpeeds.size() / 2);
+        	
+        	medianSpeed = (lowerMidpoint + upperMidpoint) / 2.0;
+        }
 
         System.out.println("\nThe median speed at the Tour de France is "
                 + medianSpeed);
 
-        // TODO: Compute the median of medians.
-        double medianOfMedians = 0;
-        // For each biker, compute the median speed. This will result in a list
-        // of
-        // median speeds. Now determine the median of this list.
-        // Store the result in medianOfMedians.
-        // Your code should go here.
+        // Compute the median speed over all years for each biker.
+        ArrayList<Double> allBikerMedianSpeeds = new ArrayList<Double>();
+        for (Map.Entry<String, Biker> currentEntry : allBikers.entrySet()) {
+            Biker currentBiker = currentEntry.getValue();
+            allBikerMedianSpeeds.add(currentBiker.getMedianSpeed());
+        }
+        
+        // Compute the median over all biker speeds over all years in this dataset.
+        Collections.sort(allBikerMedianSpeeds);
+        double medianOfMedians = allBikerMedianSpeeds.get(allBikerMedianSpeeds.size() / 2);
+        if ((allBikerMedianSpeeds.size() % 2)==0) {
+        	Double lowerMidpoint =
+        			allBikerMedianSpeeds.get(allBikerMedianSpeeds.size() / 2 - 1);
+        	
+        	Double upperMidpoint =
+        			allBikerMedianSpeeds.get(allBikerMedianSpeeds.size() / 2);
+        	
+        	medianOfMedians = (lowerMidpoint + upperMidpoint) / 2.0;
+        }
 
         System.out.println("\nThe median of medians at the Tour de France is "
                 + medianOfMedians);

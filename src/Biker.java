@@ -106,11 +106,9 @@ public class Biker {
         	Double currentAverageSpeed = currentEntry.getValue();
         	Double currentGain = currentAverageSpeed - previousAvgSpeed;
         	
-        	if (currentYear == previousYear + 1) {
-        		if (currentGain > bestGain) {
-        			bestGain = currentGain;
-        		}
-        	}
+    		if (currentGain > bestGain) {
+    			bestGain = currentGain;
+    		}
         	
         	previousYear = currentYear;
         	previousAvgSpeed = currentAverageSpeed;
